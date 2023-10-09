@@ -1,7 +1,8 @@
 use actix_web::{get, App, HttpResponse, HttpServer, Responder, http::header::ContentType, post, web};
 use bcrypt::{hash, verify};
 use actix_governor::{Governor, GovernorConfigBuilder};
-use sea_orm::{DatabaseConnection, Database, EntityTrait, Set, ActiveModelTrait, QueryFilter, ColumnTrait};
+use sea_orm::{DatabaseConnection, Database, EntityTrait, Set, ActiveModelTrait};
+use serde_json::json;
 use std::env;
 use rand::distributions::{Alphanumeric, DistString};
 
@@ -23,9 +24,13 @@ async fn index(conn: web::Data<DatabaseConnection>, web::Form(form): web::Form<s
         .unwrap();
     match user_result {
         Some(res) => {
-            println!("{:?}", &res);
             if verify(&form.password, &res.password).unwrap() {
-                return HttpResponse::Ok().finish();
+                let handlebars = handlebars::Handlebars::new();
+                let src = include_str!(r"../templates/home.hbs");
+                let tp1 = handlebars.render_template(src, &json!({"user": &form.user})).unwrap();
+                HttpResponse::Ok()
+                    .content_type(ContentType::html())
+                    .body(tp1)
             } else {
                 return HttpResponse::Unauthorized()
                     .content_type(ContentType::html())
