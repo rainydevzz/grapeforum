@@ -1,53 +1,13 @@
-use actix_web::{get, App, HttpResponse, HttpServer, Responder, http::header::ContentType, post, web};
-use bcrypt::{hash, verify};
+use actix_web::{App, HttpServer, web, cookie::Key};
+use actix_session::{SessionMiddleware, storage::CookieSessionStore};
 use actix_governor::{Governor, GovernorConfigBuilder};
-use sea_orm::{DatabaseConnection, Database, EntityTrait, Set, ActiveModelTrait};
-use serde_json::json;
+use sea_orm::{DatabaseConnection, Database};
 use std::env;
-use rand::distributions::{Alphanumeric, DistString};
+use routes::*;
 
+mod routes;
 mod structures;
 mod users;
-
-#[get("/")]
-async fn hello() -> impl Responder {
-    HttpResponse::Ok()
-        .content_type(ContentType::html())
-        .body(include_str!(r"../templates/index.html"))
-}
-
-#[post("/")]
-async fn index(conn: web::Data<DatabaseConnection>, web::Form(form): web::Form<structures::Login>) -> impl Responder {
-    let user_result: Option<users::Model> = users::Entity::find_by_id(&form.user)
-        .one(conn.get_ref())
-        .await
-        .unwrap();
-    match user_result {
-        Some(res) => {
-            if verify(&form.password, &res.password).unwrap() {
-                let handlebars = handlebars::Handlebars::new();
-                let src = include_str!(r"../templates/home.hbs");
-                let tp1 = handlebars.render_template(src, &json!({"user": &form.user})).unwrap();
-                HttpResponse::Ok()
-                    .content_type(ContentType::html())
-                    .body(tp1)
-            } else {
-                return HttpResponse::Unauthorized()
-                    .content_type(ContentType::html())
-                    .body(include_str!(r"../templates/invalid_user.html"));
-            }
-        }
-        None => {
-            let new_user = users::ActiveModel {
-                name: Set(form.user),
-                password: Set(hash(&form.password, 4).unwrap()),
-                token: Set(hash(Alphanumeric.sample_string(&mut rand::thread_rng(), 16), 4).unwrap())
-            };
-            new_user.insert(conn.get_ref()).await.unwrap();
-            return HttpResponse::Ok().finish();
-        }
-    }
-}
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -62,12 +22,22 @@ async fn main() -> std::io::Result<()> {
     let url: &String = &env::vars().find(|v: &(String, String)| v.0 == "DATABASE_URL").unwrap().1;
     let db: DatabaseConnection = Database::connect(url).await.unwrap();
 
+    let secret = Key::generate();
+
     HttpServer::new(move || {
         App::new()
             .wrap(Governor::new(&gov_conf))
+            .wrap(
+                SessionMiddleware::new(
+                    CookieSessionStore::default(),
+                    secret.clone()
+                )
+            )
             .app_data(web::Data::new(db.clone()))
-            .service(hello)
-            .service(index)
+            .service(actix_files::Files::new("/static", "./src/static"))
+            .service(index::hello)
+            .service(post_index::post_index)
+            .service(register::register)
     })
     .bind(("127.0.0.1", 8080))?
     .run()
