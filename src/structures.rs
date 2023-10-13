@@ -5,3 +5,15 @@ pub struct Login {
     pub user: String,
     pub password: String
 }
+
+#[derive(Deserialize, Debug)]
+pub struct Register {
+    pub user: String,
+    pub password: String,
+    pub confirm_password: String
+}
+
+#[derive(Deserialize, Debug)]
+pub struct AuthSession {
+    pub authorization: String
+}

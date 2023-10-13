@@ -5,8 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="./static/styling/pico.min.css">
+    <script type="text/javascript">
+        function checkLogin() {
+            let form = new FormData(document.getElementById("login-form"));
+            if(form.get("password") != form.get("confirm_password")) {
+                alert("Passwords do not match!");
+                return false;
+            } else {
+                document.getElementById("login-form").submit();
+            }
+        }
+    </script>
 </head>
 <body>
-    {{{nav}}}
+    <main class="container">
+        {{{nav}}}
+        <h1>
+            Welcome to GrapeForum :3 <br> Register to join the fun!
+        </h1>
+        <form method="post" id="login-form">
+            <div class="grid">
+                <label for="user">
+                    Username
+                    <input type="text" id="user" name="user" placeholder="Username" required>
+                </label>
+            </div>
+            <div class="grid">
+                <label for="password">
+                    Password
+                    <input type="text" style="-webkit-text-security: circle" id="password" name="password" placeholder="Password" required>
+                </label>
+            </div>
+            <div class="grid">
+                <label for="confirm_password">
+                    Confirm Password
+                    <input type="text" style="-webkit-text-security: circle" id="confirm_password" name="confirm_password" placeholder="Confirm Password" required>
+                </label>
+            </div>
+            <div class="grid">
+                <button onclick="event.preventDefault(); checkLogin();">Submit</button>
+            </div>
+        </form>
+    </main>
 </body>
 </html>

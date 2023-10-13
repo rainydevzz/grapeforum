@@ -28,16 +28,18 @@ async fn main() -> std::io::Result<()> {
         App::new()
             .wrap(Governor::new(&gov_conf))
             .wrap(
-                SessionMiddleware::new(
-                    CookieSessionStore::default(),
-                    secret.clone()
-                )
+                SessionMiddleware::builder(CookieSessionStore::default(), secret.clone())
+                    .cookie_secure(false)
+                    .build(),
             )
             .app_data(web::Data::new(db.clone()))
             .service(actix_files::Files::new("/static", "./src/static"))
             .service(index::hello)
             .service(post_index::post_index)
             .service(register::register)
+            .service(invalid_user::invalid_user)
+            .service(home::home)
+            .service(post_register::post_register)
     })
     .bind(("127.0.0.1", 8080))?
     .run()

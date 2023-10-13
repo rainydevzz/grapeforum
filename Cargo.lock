@@ -1148,6 +1148,7 @@ dependencies = [
  "actix-governor",
  "actix-session",
  "actix-web",
+ "base64 0.21.4",
  "bcrypt",
  "dotenvy",
  "handlebars",
