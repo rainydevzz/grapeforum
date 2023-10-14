@@ -8,12 +8,17 @@
     <script type="text/javascript">
         function checkLogin() {
             let form = new FormData(document.getElementById("login-form"));
+            if(form.get("user").length > 16 || form.get("password").length > 16) {
+                alert("username and password must be under 16 characters!");
+                return false;
+            }
+
             if(form.get("password") != form.get("confirm_password")) {
                 alert("Passwords do not match!");
                 return false;
-            } else {
-                document.getElementById("login-form").submit();
             }
+
+            document.getElementById("login-form").submit();
         }
     </script>
 </head>

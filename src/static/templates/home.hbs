@@ -5,8 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="./static/styling/pico.min.css">
+    <link rel="stylesheet" href="./static/styling/home.css">
 </head>
 <body>
-    Hello {{user}}
+    <main class="container">
+        {{{nav}}}
+        <h1>Hello {{user}}</h1>
+            <div class="ask-posts">
+                No posts? <a href="/create-post">Create One!</a>
+            </div>
+        {{#each posts}}
+            <article>
+                <h2>{{title}} | {{owner}}</h2>
+                <p>{{content}}</p>
+            </article>
+        {{/each}}
+    </main>
 </body>
 </html>

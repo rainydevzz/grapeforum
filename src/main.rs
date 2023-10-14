@@ -7,7 +7,7 @@ use routes::*;
 
 mod routes;
 mod structures;
-mod users;
+mod entities;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -26,7 +26,7 @@ async fn main() -> std::io::Result<()> {
 
     HttpServer::new(move || {
         App::new()
-            .wrap(Governor::new(&gov_conf))
+            //.wrap(Governor::new(&gov_conf))
             .wrap(
                 SessionMiddleware::builder(CookieSessionStore::default(), secret.clone())
                     .cookie_secure(false)
@@ -40,6 +40,8 @@ async fn main() -> std::io::Result<()> {
             .service(invalid_user::invalid_user)
             .service(home::home)
             .service(post_register::post_register)
+            .service(create_post::create_post)
+            .service(post_create_post::create_post)
     })
     .bind(("127.0.0.1", 8080))?
     .run()

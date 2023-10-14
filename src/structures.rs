@@ -14,6 +14,7 @@ pub struct Register {
 }
 
 #[derive(Deserialize, Debug)]
-pub struct AuthSession {
-    pub authorization: String
+pub struct CreatePost {
+    pub content: String,
+    pub title: String
 }
