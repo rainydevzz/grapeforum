@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>GrapeForum</title>
     <link rel="stylesheet" href="./static/styling/pico.min.css">
     <link rel="stylesheet" href="./static/styling/home.css">
 </head>
@@ -12,13 +12,15 @@
         {{{nav}}}
         <h1>Hello {{user}}</h1>
             <div class="ask-posts">
-                No posts? <a href="/create-post">Create One!</a>
+                {{{post_ask}}}
             </div>
         {{#each posts}}
-            <article>
-                <h2>{{title}} | {{owner}}</h2>
-                <p>{{content}}</p>
-            </article>
+            <a href="/posts/{{id}}" class="link">
+                <article onclick="getClass(event)">
+                    <h2>{{title}} | {{owner}}</h2>
+                    <p>{{content}}</p>
+                </article>
+            </a>
         {{/each}}
     </main>
 </body>

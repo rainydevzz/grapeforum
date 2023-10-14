@@ -18,3 +18,8 @@ pub struct CreatePost {
     pub content: String,
     pub title: String
 }
+
+#[derive(Deserialize, Debug)]
+pub struct Comment {
+    pub comment: String
+}

@@ -6,3 +6,6 @@ pub mod home;
 pub mod post_register;
 pub mod create_post;
 pub mod post_create_post;
+pub mod posts;
+pub mod comment;
+pub mod post_comment;

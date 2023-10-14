@@ -1,5 +1,5 @@
 use actix_session::Session;
-use actix_web::{post, Responder, web::{self, Redirect}, HttpResponse, http::header::ContentType};
+use actix_web::{post, Responder, web::{self, Redirect}};
 use sea_orm::{DatabaseConnection, EntityTrait, QueryFilter, ColumnTrait, Set, ActiveModelTrait};
 use crate::{entities::{posts, users}, structures};
 use rand::distributions::{Alphanumeric, DistString};

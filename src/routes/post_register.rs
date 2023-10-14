@@ -18,9 +18,8 @@ pub async fn post_register(conn: web::Data<DatabaseConnection>, web::Form(form):
         }
         None => {
             let mut b64 = base64::engine::general_purpose::STANDARD_NO_PAD.encode(&form.user);
-            let r_str = Alphanumeric.sample_string(&mut rand::thread_rng(), 16);
+            let r_str = Alphanumeric.sample_string(&mut rand::thread_rng(), 24);
             b64.push_str(&r_str);
-            println!("{}", &b64);
             let new_user = entities::users::ActiveModel {
                 name: Set(form.user),
                 password: Set(hash(form.password, 4).unwrap()),

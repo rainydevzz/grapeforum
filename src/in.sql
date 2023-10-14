@@ -9,3 +9,9 @@ CREATE TABLE IF NOT EXISTS posts (
     content TEXT NOT NULL,
     owner TEXT NOT NULL
 );
+CREATE TABLE IF NOT EXISTS comments (
+    id TEXT PRIMARY KEY,
+    post_id TEXT NOT NULL,
+    content TEXT NOT NULL,
+    owner TEXT NOT NULL
+);

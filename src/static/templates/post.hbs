@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GrapeForum</title>
+    <link rel="stylesheet" href="../static/styling/pico.min.css">
+    <link rel="stylesheet" href="../static/styling/post.css">
+</head>
+<body>
+    <main class="container">
+        {{{nav}}}
+        <article>    
+            <h1 style="text-align: center; font-size: xx-large">{{title}}</h1>
+            <p style="text-align: center;">{{content}}</p>
+            {{{can_reply}}}
+        </article>
+        {{#each comments}}
+            <article class="comment">
+                <h1>{{owner}}</h1>
+                <p1>{{content}}</p1>
+            </article>
+        {{/each}}
+    </main>
+</body>
+</html>

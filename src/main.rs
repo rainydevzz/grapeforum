@@ -13,7 +13,7 @@ mod entities;
 async fn main() -> std::io::Result<()> {
     let gov_conf = GovernorConfigBuilder::default()
         .per_second(2)
-        .burst_size(5)
+        .burst_size(8)
         .finish()
         .unwrap();
 
@@ -26,14 +26,14 @@ async fn main() -> std::io::Result<()> {
 
     HttpServer::new(move || {
         App::new()
-            //.wrap(Governor::new(&gov_conf))
+            .wrap(Governor::new(&gov_conf))
             .wrap(
                 SessionMiddleware::builder(CookieSessionStore::default(), secret.clone())
                     .cookie_secure(false)
                     .build(),
             )
             .app_data(web::Data::new(db.clone()))
-            .service(actix_files::Files::new("/static", "./src/static"))
+            .service(actix_files::Files::new("/static", "./src/static").show_files_listing())
             .service(index::hello)
             .service(post_index::post_index)
             .service(register::register)
@@ -42,6 +42,9 @@ async fn main() -> std::io::Result<()> {
             .service(post_register::post_register)
             .service(create_post::create_post)
             .service(post_create_post::create_post)
+            .service(posts::get_post)
+            .service(comment::comment)
+            .service(post_comment::post_comment)
     })
     .bind(("127.0.0.1", 8080))?
     .run()
