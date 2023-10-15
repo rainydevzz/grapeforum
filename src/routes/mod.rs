@@ -1,4 +1,4 @@
-pub mod index;
+pub mod login;
 pub mod post_index;
 pub mod register;
 pub mod invalid_user;
@@ -9,3 +9,4 @@ pub mod post_create_post;
 pub mod posts;
 pub mod comment;
 pub mod post_comment;
+pub mod index;

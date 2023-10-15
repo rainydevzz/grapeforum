@@ -1,7 +1,8 @@
 CREATE TABLE IF NOT EXISTS users (
     name TEXT PRIMARY KEY,
     password TEXT NOT NULL,
-    token TEXT NOT NULL
+    token TEXT NOT NULL,
+    bio TEXT NOT NULL
 );
 CREATE TABLE IF NOT EXISTS posts (
     id TEXT PRIMARY KEY,

@@ -10,7 +10,6 @@ pub async fn home(conn: web::Data<DatabaseConnection>, session: Session) -> impl
     while home_data.len() > 0 {
         reversed_data.push(home_data.pop().unwrap())
     }
-    let hbs = handlebars::Handlebars::new();
     let mut post_ask = String::new();
     let mut user = session.get::<String>("user").unwrap();
     match &user {
@@ -19,6 +18,7 @@ pub async fn home(conn: web::Data<DatabaseConnection>, session: Session) -> impl
         }
         None => user = Some("Guest".to_string())
     }
+    let hbs = handlebars::Handlebars::new();
     HttpResponse::Ok()
         .content_type(ContentType::html())
         .body(
@@ -28,7 +28,8 @@ pub async fn home(conn: web::Data<DatabaseConnection>, session: Session) -> impl
                     "nav": include_str!(r"../static/templates/nav.html"),
                     "user": user.unwrap(),
                     "posts": reversed_data,
-                    "post_ask": post_ask
+                    "post_ask": post_ask,
+                    "footer": include_str!(r"../static/templates/footer.html")
                 })
             ).unwrap()
         )

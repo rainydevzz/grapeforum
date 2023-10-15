@@ -3,32 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./static/styling/pico.min.css">
     <title>GrapeForum</title>
+    <link rel="stylesheet" href="./static/styling/pico.min.css">
+    <link rel="stylesheet" href="./static/styling/index.css">
 </head>
 <body>
     <main class="container">
         {{{nav}}}
-        <h1>
-            Welcome to GrapeForum :3 <br> Log in to join the fun!
-        </h1>
-        <form method="post">
-            <div class="grid">
-                <label for="user">
-                    Username
-                    <input type="text" id="user" name="user" placeholder="Username" required>
-                </label>
+        <div class="greeting">   
+            <h1>GrapeForum</h1>
+            <h3>A sweet and simple forum platform for everyone.</h3>
+            <div class="buttons">
+                <a href="/login"><button>Login</button></a>
+                <a href="/register"><button>Register</button></a>
             </div>
-            <div class="grid">
-                <label for="password">
-                    Password
-                    <input type="text" style="-webkit-text-security: circle" id="password" name="password" placeholder="Password" required>
-                </label>
-            </div>
-            <div class="grid">
-                <button onclick="">Submit</button>
-            </div>
-        </form>
+        </div>
+        {{{footer}}}
     </main>
 </body>
 </html>

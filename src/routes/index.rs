@@ -1,19 +1,17 @@
-use actix_session::Session;
-use actix_web::{get, HttpResponse, Responder, http::header::{ContentType, LOCATION}};
+use actix_web::{get, HttpResponse, Responder, http::header::ContentType};
 
 #[get("/")]
-pub async fn hello(session: Session) -> impl Responder {
+async fn index() -> impl Responder {
     let hbs = handlebars::Handlebars::new();
-    if session.get::<String>("user").unwrap().is_some() {
-        HttpResponse::Found().append_header((LOCATION, "/home")).finish()
-    } else {
-        HttpResponse::Ok()
+    HttpResponse::Ok()
         .content_type(ContentType::html())
-        .body( 
+        .body(
             hbs.render_template(
                 include_str!(r"../static/templates/index.hbs"),
-                &serde_json::json!({"nav": include_str!(r"../static/templates/nav.html")})
-            ).unwrap()
+                &serde_json::json!({
+                    "nav": include_str!(r"../static/templates/nav.html"),
+                    "footer": include_str!(r"../static/templates/footer.html")
+                })
+            ).unwrap()    
         )
-    }
 }

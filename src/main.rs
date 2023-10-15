@@ -34,7 +34,7 @@ async fn main() -> std::io::Result<()> {
             )
             .app_data(web::Data::new(db.clone()))
             .service(actix_files::Files::new("/static", "./src/static").show_files_listing())
-            .service(index::hello)
+            .service(login::login)
             .service(post_index::post_index)
             .service(register::register)
             .service(invalid_user::invalid_user)
@@ -45,8 +45,10 @@ async fn main() -> std::io::Result<()> {
             .service(posts::get_post)
             .service(comment::comment)
             .service(post_comment::post_comment)
+            .service(index::index)
     })
     .bind(("127.0.0.1", 8080))?
+    .workers(1)
     .run()
     .await
 }

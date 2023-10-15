@@ -3,24 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GrapeForum</title>
     <link rel="stylesheet" href="./static/styling/pico.min.css">
-    <link rel="stylesheet" href="./static/styling/create_post.css">
+    <title>GrapeForum</title>
 </head>
 <body>
     <main class="container">
         {{{nav}}}
+        <h1>
+            Welcome to GrapeForum :3 <br> Log in to join the fun!
+        </h1>
         <form method="post">
             <div class="grid">
                 <label for="user">
-                        Title
-                    <input type="text" class="title" id="title" name="title" placeholder="Title" required>
+                    Username
+                    <input type="text" id="user" name="user" placeholder="Username" required>
                 </label>
-                </div>
-                <div class="grid">
+            </div>
+            <div class="grid">
                 <label for="password">
-                        Content
-                    <textarea name="content" class="content" id="content" rows="5" cols="25" placeholder="Type Here..."></textarea>
+                    Password
+                    <input type="text" style="-webkit-text-security: circle" id="password" name="password" placeholder="Password" required>
                 </label>
             </div>
             <div class="grid">

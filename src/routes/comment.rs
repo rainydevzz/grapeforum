@@ -9,7 +9,8 @@ pub async fn comment() -> impl Responder {
             hbs.render_template(
                 include_str!(r"../static/templates/comment.hbs"),
                 &serde_json::json!({
-                    "nav": include_str!(r"../static/templates/nav.html")
+                    "nav": include_str!(r"../static/templates/nav.html"),
+                    "footer": include_str!(r"../static/templates/footer.html")
                 })
             ).unwrap()
         )

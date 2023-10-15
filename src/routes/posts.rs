@@ -40,7 +40,8 @@ async fn get_post(req: HttpRequest, conn: web::Data<DatabaseConnection>, session
                     "title": post_data.title,
                     "content": post_data.content,
                     "can_reply": can_reply,
-                    "comments": comments
+                    "comments": comments,
+                    "footer": include_str!(r"../static/templates/footer.html")
                 })
             ).unwrap()
         )
