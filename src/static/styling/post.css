@@ -1,3 +1,13 @@
 .comment {
     height: 60%;
 }
+
+.comments {
+    size: 50%;
+    font-size: 16px;
+    margin-top: 4%;
+}
+
+p {
+    margin-top: -3%;
+}

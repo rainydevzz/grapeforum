@@ -15,12 +15,13 @@
             <p style="text-align: center;">{{content}}</p>
             {{{can_reply}}}
         </article>
-        {{#each comments}}
-            <article class="comment">
-                <h1>{{owner}}</h1>
-                <p1>{{content}}</p1>
-            </article>
-        {{/each}}
+        <h2>Comments</h2>
+        <div class="comments">    
+            {{#each comments}}
+                <h3>{{owner}}</h3>
+                <p>{{content}}</p>
+            {{/each}}
+        </div>
     </main>
 </body>
 </html>
