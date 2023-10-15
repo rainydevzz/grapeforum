@@ -11,6 +11,8 @@ pub struct Model {
     pub password: String,
     #[sea_orm(column_type = "Text")]
     pub token: String,
+    #[sea_orm(column_type = "Text")]
+    pub bio: String,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

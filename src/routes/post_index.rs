@@ -4,7 +4,7 @@ use crate::{entities, structures};
 use sea_orm::{DatabaseConnection, EntityTrait};
 use bcrypt::verify;
 
-#[post("/")]
+#[post("/login")]
 pub async fn post_index(conn: web::Data<DatabaseConnection>, web::Form(form): web::Form<structures::Login>, session: Session) -> impl Responder {
     let user_result: Option<entities::users::Model> = entities::users::Entity::find_by_id(&form.user)
         .one(conn.get_ref())

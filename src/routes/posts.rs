@@ -12,37 +12,43 @@ async fn get_post(req: HttpRequest, conn: web::Data<DatabaseConnection>, session
     let post_data = entities::posts::Entity::find_by_id(&id)
         .one(conn.get_ref())
         .await
-        .unwrap()
         .unwrap();
 
-    let comments = entities::comments::Entity::find()
-        .filter(entities::comments::Column::PostId.contains(&id))
-        .into_json()
-        .all(conn.get_ref())
-        .await
-        .unwrap();
+    match post_data {
+        Some(post_data) => {
+            let comments = entities::comments::Entity::find()
+                .filter(entities::comments::Column::PostId.contains(&id))
+                .into_json()
+                .all(conn.get_ref())
+                .await
+                .unwrap();
 
-    match user {
-        Some(_) => {
-            can_reply = "<a href=\"/posts/".to_owned() + &post_data.id + "/reply\">Reply</a>"
+        match user {
+            Some(_) => {
+                can_reply = "<a href=\"/posts/".to_owned() + &post_data.id + "/reply\">Reply</a>"
+            }
+            None => {}
         }
-        None => {}
-    }
 
-    let hbs = handlebars::Handlebars::new();
-    HttpResponse::Ok()
-        .content_type(ContentType::html())
-        .body(
-            hbs.render_template(
-                include_str!(r"../static/templates/post.hbs"),
-                &serde_json::json!({
-                    "nav": include_str!(r"../static/templates/nav.html"),
-                    "title": post_data.title,
-                    "content": post_data.content,
-                    "can_reply": can_reply,
-                    "comments": comments,
-                    "footer": include_str!(r"../static/templates/footer.html")
-                })
-            ).unwrap()
-        )
+        let hbs = handlebars::Handlebars::new();
+        HttpResponse::Ok()
+            .content_type(ContentType::html())
+            .body(
+                hbs.render_template(
+                    include_str!(r"../static/templates/post.hbs"),
+                    &serde_json::json!({
+                        "nav": include_str!(r"../static/templates/nav.html"),
+                        "title": post_data.title,
+                        "content": post_data.content,
+                        "can_reply": can_reply,
+                        "comments": comments,
+                        "footer": include_str!(r"../static/templates/footer.html")
+                    })
+                ).unwrap()
+            )
+        }
+        None => {
+            HttpResponse::NotFound().body("couldn't find that post.")
+        }
+    }
 }

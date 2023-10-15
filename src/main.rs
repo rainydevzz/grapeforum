@@ -3,7 +3,7 @@ use actix_session::{SessionMiddleware, storage::CookieSessionStore};
 use actix_governor::{Governor, GovernorConfigBuilder};
 use sea_orm::{DatabaseConnection, Database};
 use std::env;
-use routes::*;
+use routes::{*, users::user};
 
 mod routes;
 mod structures;
@@ -46,6 +46,7 @@ async fn main() -> std::io::Result<()> {
             .service(comment::comment)
             .service(post_comment::post_comment)
             .service(index::index)
+            .service(user)
     })
     .bind(("127.0.0.1", 8080))?
     .workers(1)

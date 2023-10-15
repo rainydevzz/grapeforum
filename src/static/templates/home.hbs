@@ -17,7 +17,7 @@
         {{#each posts}}
             <a href="/posts/{{id}}" class="link">
                 <article onclick="getClass(event)">
-                    <h2>{{title}} | {{owner}}</h2>
+                    <h2>{{title}} | <a href="/users/{{owner}}">{{owner}}</a></h2>
                     <p>{{content}}</p>
                 </article>
             </a>

@@ -8,6 +8,12 @@
     <script type="text/javascript">
         function checkLogin() {
             let form = new FormData(document.getElementById("login-form"));
+            let rxp = /^[a-zA-Z0-9-_]+$/;
+            let reg = new RegExp(rxp);
+            if(!reg.test(form.get("user"))) {
+                alert("usernames can only contain alphanumeric characters, dashes, and underscores.");
+                return false;
+            }
             if(form.get("user").length > 16 || form.get("password").length > 16) {
                 alert("username and password must be under 16 characters!");
                 return false;

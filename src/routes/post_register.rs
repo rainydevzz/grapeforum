@@ -23,7 +23,8 @@ pub async fn post_register(conn: web::Data<DatabaseConnection>, web::Form(form):
             let new_user = entities::users::ActiveModel {
                 name: Set(form.user),
                 password: Set(hash(form.password, 4).unwrap()),
-                token: Set(b64)
+                token: Set(b64),
+                bio: Set("Yet another GrapeForum user.".to_string())
             };
             new_user.insert(conn.get_ref()).await.unwrap();
             HttpResponse::Ok().content_type(ContentType::html()).body("You have registered! Please visit the <a href=\"/\">login</a> page to login.")
