@@ -1,9 +1,10 @@
+use actix_session::Session;
 use actix_web::{get, HttpResponse, Responder, http::header::ContentType, HttpRequest, web};
 use sea_orm::{DatabaseConnection, EntityTrait};
 use crate::entities::users;
 
 #[get("/users/{username}")]
-async fn user(req: HttpRequest, conn: web::Data<DatabaseConnection>) -> impl Responder {
+async fn user(req: HttpRequest, conn: web::Data<DatabaseConnection>, session: Session) -> impl Responder {
     let username = req.match_info().get("username").unwrap();
     let user_res = users::Entity::find_by_id(username)
         .one(conn.get_ref())
@@ -13,6 +14,17 @@ async fn user(req: HttpRequest, conn: web::Data<DatabaseConnection>) -> impl Res
     match user_res {
         Some(res) => {
             let hbs = handlebars::Handlebars::new();
+            let can_edit: String;
+            let tok = session.get::<String>("authorization").unwrap();
+                if !tok.is_none() {
+                    if tok.unwrap() == res.token {
+                        can_edit = include_str!(r"../static/templates/bio_form.html").to_owned();
+                    } else {
+                        can_edit = "".to_owned();
+                    }
+                } else {
+                    can_edit = "".to_owned();
+                }
             HttpResponse::Ok()
                 .content_type(ContentType::html())
                 .body(
@@ -21,7 +33,8 @@ async fn user(req: HttpRequest, conn: web::Data<DatabaseConnection>) -> impl Res
                         &serde_json::json!({
                             "nav": include_str!(r"../static/templates/nav.html"),
                             "name": &res.name,
-                            "bio": &res.bio
+                            "bio": &res.bio,
+                            "bio_form": can_edit
                         })
                     ).unwrap()
                 )

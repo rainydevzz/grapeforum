@@ -29,7 +29,7 @@ async fn create_post(
             Redirect::to("/home").see_other()
         }
         None => {
-            Redirect::to("/").see_other()
+            Redirect::to("/login").see_other()
         }
     }
 }

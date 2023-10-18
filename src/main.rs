@@ -1,4 +1,4 @@
-use actix_web::{App, HttpServer, web, cookie::Key};
+use actix_web::{App, HttpServer, web, cookie::Key, get};
 use actix_session::{SessionMiddleware, storage::CookieSessionStore};
 use actix_governor::{Governor, GovernorConfigBuilder};
 use sea_orm::{DatabaseConnection, Database};
@@ -8,6 +8,11 @@ use routes::{*, users::user};
 mod routes;
 mod structures;
 mod entities;
+
+#[get("/a")]
+async fn hi() -> String {
+    "hello world".to_owned()
+}
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -26,7 +31,7 @@ async fn main() -> std::io::Result<()> {
 
     HttpServer::new(move || {
         App::new()
-            .wrap(Governor::new(&gov_conf))
+            //.wrap(Governor::new(&gov_conf))
             .wrap(
                 SessionMiddleware::builder(CookieSessionStore::default(), secret.clone())
                     .cookie_secure(false)
@@ -47,6 +52,9 @@ async fn main() -> std::io::Result<()> {
             .service(post_comment::post_comment)
             .service(index::index)
             .service(user)
+            .service(hi)
+            .service(post_users::user)
+            .service(logout::logout)
     })
     .bind(("127.0.0.1", 8080))?
     .workers(1)

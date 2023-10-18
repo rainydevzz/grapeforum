@@ -11,3 +11,5 @@ pub mod comment;
 pub mod post_comment;
 pub mod index;
 pub mod users;
+pub mod post_users;
+pub mod logout;
