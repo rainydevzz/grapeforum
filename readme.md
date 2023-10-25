@@ -19,3 +19,5 @@ all you need is `docker` and `docker-compose`, and then run `docker-compose up` 
 - Commenting on Posts
 - Editable About Me
 - More to come!
+
+![Grapeforum Image]("https://i.ibb.co/944yqTH/2023-10-24-18-27.png")
