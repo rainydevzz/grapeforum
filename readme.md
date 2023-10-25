@@ -1,12 +1,21 @@
 # GrapeForum
 
-**A sweet and simple forum platform for everyone. (Early WIP)**
+**A sweet and simple forum platform for everyone.**
 
 ### Getting Started
 
-Although I plan to make a more streamlined approach to running the software at some point, for now, it must be run manually.
+You can run GrapeForum thanks to Docker Compose!
 
-Ensure you have the Rust Compiler installed as well as a running PostgreSQL database.\
-In the root directory of the project, create a file called `.env` and create a variable called `DATABASE_URL`, and name it your DB url.\
-For table creation, follow what is found in `in.sql`.\
-Navigate to the root directory of the project and run `cargo run --release`.
+all you need is `docker` and `docker-compose`, and then run `docker-compose up` in the root project dir, and you're good to go!
+
+### Current Features
+
+- No algorithms or trackers. You don't even need an email!
+- 100% libre thanks to GPLv3
+- Logins/Registrations
+- Built-in Rate limiting powered by Actix Governor
+- Secure accounts with tokens and hashed passwords
+- Posting
+- Commenting on Posts
+- Editable About Me
+- More to come!

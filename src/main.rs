@@ -1,7 +1,7 @@
 use actix_web::{App, HttpServer, web, cookie::Key};
 use actix_session::{SessionMiddleware, storage::CookieSessionStore};
 use actix_governor::{Governor, GovernorConfigBuilder};
-use sea_orm::{DatabaseConnection, Database};
+use sea_orm::{DatabaseConnection, Database, ConnectionTrait};
 use std::env;
 use routes::{*, users::user};
 
@@ -22,6 +22,8 @@ async fn main() -> std::io::Result<()> {
 
     let url: &String = &env::vars().find(|v: &(String, String)| v.0 == "DATABASE_URL").unwrap().1;
     let db: DatabaseConnection = Database::connect(url).await.unwrap();
+
+    let _ = &db.execute_unprepared(include_str!(r"./in.sql")).await.unwrap();
 
     let secret = Key::generate();
 
@@ -51,7 +53,7 @@ async fn main() -> std::io::Result<()> {
             .service(post_users::user)
             .service(logout::logout)
     })
-    .bind(("127.0.0.1", 8080))?
+    .bind(("0.0.0.0", 8080))?
     .workers(1)
     .run()
     .await
