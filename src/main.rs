@@ -54,7 +54,6 @@ async fn main() -> std::io::Result<()> {
             .service(logout::logout)
     })
     .bind(("0.0.0.0", 8080))?
-    .workers(1)
     .run()
     .await
 }
