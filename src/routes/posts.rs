@@ -2,7 +2,7 @@ use actix_session::Session;
 use actix_web::{get, HttpRequest, Responder, web, HttpResponse, http::header::ContentType};
 use sea_orm::{DatabaseConnection, EntityTrait, QueryFilter, ColumnTrait};
 
-use crate::entities;
+use crate::{entities, utils::nav_builder};
 
 #[get("/posts/{id}")]
 async fn get_post(req: HttpRequest, conn: web::Data<DatabaseConnection>, session: Session) -> impl Responder {
@@ -37,7 +37,7 @@ async fn get_post(req: HttpRequest, conn: web::Data<DatabaseConnection>, session
                 hbs.render_template(
                     include_str!(r"../static/templates/post.hbs"),
                     &serde_json::json!({
-                        "nav": include_str!(r"../static/templates/nav.html"),
+                        "nav": nav_builder(&hbs, session.get("authorization").unwrap()),
                         "title": post_data.title,
                         "content": post_data.content,
                         "can_reply": can_reply,

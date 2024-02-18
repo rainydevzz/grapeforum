@@ -1,5 +1,6 @@
 use actix_session::Session;
 use actix_web::{get, HttpResponse, Responder, http::header::{ContentType, LOCATION}};
+use super::super::utils::nav_builder;
 
 #[get("/login")]
 pub async fn login(session: Session) -> impl Responder {
@@ -12,7 +13,7 @@ pub async fn login(session: Session) -> impl Responder {
         .body( 
             hbs.render_template(
                 include_str!(r"../static/templates/login.hbs"),
-                &serde_json::json!({"nav": include_str!(r"../static/templates/nav.html"), "footer": include_str!(r"../static/templates/footer.html")})
+                &serde_json::json!({"nav": nav_builder(&hbs, None), "footer": include_str!(r"../static/templates/footer.html")})
             ).unwrap()
         )
     }

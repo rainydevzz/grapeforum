@@ -1,7 +1,7 @@
 use actix_session::Session;
 use actix_web::{get, HttpResponse, Responder, http::header::ContentType, web};
 use sea_orm::{DatabaseConnection, EntityTrait};
-use crate::entities;
+use crate::{entities, utils::nav_builder};
 
 #[get("/home")]
 pub async fn home(conn: web::Data<DatabaseConnection>, session: Session) -> impl Responder {
@@ -25,7 +25,7 @@ pub async fn home(conn: web::Data<DatabaseConnection>, session: Session) -> impl
             hbs.render_template(
                 include_str!(r"../static/templates/home.hbs"),
                 &serde_json::json!({
-                    "nav": include_str!(r"../static/templates/nav.html"),
+                    "nav": nav_builder(&hbs, session.get("authorization").unwrap()),
                     "user": user.unwrap(),
                     "posts": reversed_data,
                     "post_ask": post_ask,

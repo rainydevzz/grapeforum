@@ -1,7 +1,7 @@
 use actix_session::Session;
 use actix_web::{get, HttpResponse, Responder, http::header::ContentType, HttpRequest, web};
 use sea_orm::{DatabaseConnection, EntityTrait};
-use crate::entities::users;
+use crate::{entities::users, utils::nav_builder};
 
 #[get("/users/{username}")]
 async fn user(req: HttpRequest, conn: web::Data<DatabaseConnection>, session: Session) -> impl Responder {
@@ -31,7 +31,7 @@ async fn user(req: HttpRequest, conn: web::Data<DatabaseConnection>, session: Se
                     hbs.render_template(
                         include_str!(r"../static/templates/user.hbs"),
                         &serde_json::json!({
-                            "nav": include_str!(r"../static/templates/nav.html"),
+                            "nav": nav_builder(&hbs, session.get("authorization").unwrap()),
                             "name": &res.name,
                             "bio": &res.bio,
                             "bio_form": can_edit

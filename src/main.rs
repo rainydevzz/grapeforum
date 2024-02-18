@@ -8,6 +8,7 @@ use routes::{*, users::user};
 mod routes;
 mod structures;
 mod entities;
+mod utils;
 
 
 #[actix_web::main]
