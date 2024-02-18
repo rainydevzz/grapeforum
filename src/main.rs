@@ -19,8 +19,6 @@ async fn main() -> std::io::Result<()> {
         .finish()
         .unwrap();
 
-    dotenvy::dotenv().expect("not found");
-
     let url: &String = &env::vars().find(|v: &(String, String)| v.0 == "DATABASE_URL").unwrap().1;
     let db: DatabaseConnection = Database::connect(url).await.unwrap();
 
