@@ -13,6 +13,8 @@ GrapeForum uses the HARP stack (which I made up just now)
 - Rust (A blazingly fast, memory-safe systems programming language suited for almost any use case)
 - PostgreSQL (An open-source, SQL-based database solution with lots of features and good performance)
 
+This stack allows for a performant backend and frontend, with focus on keeping the client-side extremely lightweight. Since the Handlebars engine is implemented directly in Rust, this also results in *very* little Javascript throughout the entire application.
+
 ### Getting Started
 
 You can run GrapeForum thanks to Docker Compose!
