@@ -8,6 +8,7 @@ use crate::{entities, utils::nav_builder};
 async fn get_post(req: HttpRequest, conn: web::Data<DatabaseConnection>, session: Session) -> impl Responder {
     let user = session.get::<String>("user").unwrap();
     let mut can_reply = String::new();
+    let mut can_control = String::new();
     let id: String = req.match_info().get("id").unwrap().parse().unwrap();
     let post_data = entities::posts::Entity::find_by_id(&id)
         .one(conn.get_ref())
@@ -24,7 +25,10 @@ async fn get_post(req: HttpRequest, conn: web::Data<DatabaseConnection>, session
                 .unwrap();
 
         match user {
-            Some(_) => {
+            Some(u) => {
+                if u == post_data.owner {
+                    can_control = format!("<a href=\"/posts/{}/edit-or-delete\">Edit Or Delete</a>", id);
+                }
                 can_reply = "<a href=\"/posts/".to_owned() + &post_data.id + "/reply\">Reply</a>"
             }
             None => {}
@@ -42,7 +46,8 @@ async fn get_post(req: HttpRequest, conn: web::Data<DatabaseConnection>, session
                         "content": post_data.content,
                         "can_reply": can_reply,
                         "comments": comments,
-                        "footer": include_str!(r"../static/templates/footer.html")
+                        "footer": include_str!(r"../static/templates/footer.html"),
+                        "can_control": can_control
                     })
                 ).unwrap()
             )

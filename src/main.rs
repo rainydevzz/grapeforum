@@ -51,6 +51,9 @@ async fn main() -> std::io::Result<()> {
             .service(user)
             .service(post_users::user)
             .service(logout::logout)
+            .service(edit_post::edit_or_delete_post)
+            .service(post_edit_post::edit_or_delete_post)
+            .service(post_delete::edit_or_delete_post)
     })
     .bind(("0.0.0.0", 8080))?
     .run()

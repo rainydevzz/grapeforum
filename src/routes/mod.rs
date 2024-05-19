@@ -13,3 +13,6 @@ pub mod index;
 pub mod users;
 pub mod post_users;
 pub mod logout;
+pub mod post_edit_post;
+pub mod edit_post;
+pub mod post_delete;

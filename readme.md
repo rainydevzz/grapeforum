@@ -30,7 +30,7 @@ If you're interested in hosting the service out to the internet, you can use a s
 - Logins/Registrations
 - Built-in Rate limiting powered by Actix Governor
 - Secure accounts with tokens and hashed passwords
-- Posting
+- Posting, Including editing and deleting posts
 - Commenting on Posts
 - Editable About Me
 - More to come!
